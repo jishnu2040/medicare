@@ -1,35 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListItem from './ListItem';
 import Tools from '../components/Tools';
 
-const arr = [
-  {
-    id: 1,
-    title: "Appointment for October",
-    descr: 'The patient is rescheduled to October',
-    isActive: true
-  },
-  {
-    id: 2,
-    title: "Appointment for November",
-    descr: 'The patient is rescheduled to November',
-    isActive: false
-  },
-  {
-    id: 3,
-    title: "Appointment for January",
-    descr: 'The patient is rescheduled to January',
-    isActive: true
-  }
-];
 
-function List() {
-  const [list, setList] = useState(arr);
+
+function HomePage() {
+  console.log("Render home");
+
+  const [list, setList] = useState([]);
+
+
+  useEffect(() => {
+    // Fetch data from the JSON file when the component mounts
+    fetch('/data.json')
+      .then(response => response.json())
+      .then(data => setList(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+  
 
   function onListChange(evt) {
     const value = evt.target.value;
 
-    const newList = arr.filter((item) => {
+    const newList = list.filter((item) => {
       if (value === "all") {
         return true;
       }
@@ -46,10 +39,12 @@ function List() {
   }
   function onDelete(id) {
     const updatedList = list.filter(item => item.id !== id);
-    setList(updatedList);
+    setList(updatedList); 
   }
 
   return (
+    <div>
+      <input type='checkbox'></input>show Label
     <Tools onAction={onListChange}>
       <div className='app-list'>
         {list.map((obj) => (
@@ -60,7 +55,8 @@ function List() {
         ))}
       </div>
     </Tools>
+    </div>
   );
 }
 
-export default List;
+export default HomePage;

@@ -2,7 +2,7 @@ import React from 'react'
 import './Tools.css'
 class Tools extends React.Component {
   render() {
-    const {
+    const { 
     children,
     onAction
      } = this.props;
